@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/auth/login.dart';
 import 'screens/auth/register.dart';
-import 'screens/home/home.dart';
+import 'screens/product/product.dart';
+import 'screens/nav/nav.dart';
 import 'services/shared_service.dart';
 
 Widget _defaultHome = const LoginPage();
@@ -11,7 +12,7 @@ void main() async {
 
   bool _result = await SharedService.isLoggedIn();
   if(_result) {
-    _defaultHome = const HomePage();
+    _defaultHome = const NavPage();
   }
 
   runApp(const MyApp());
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => _defaultHome,
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const NavPage(),
       },
       
     );
