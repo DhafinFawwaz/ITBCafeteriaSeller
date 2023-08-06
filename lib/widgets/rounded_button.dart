@@ -10,8 +10,10 @@ class RoundedButton extends StatelessWidget {
       this.pad,
       required this.height,
       this.textSize,
-      required this.width});
+      required this.width,
+      this.textColor});
 
+  Color? textColor = Colors.white;
   double? textSize = 16;
   double height = 39;
   double width = 178;
@@ -40,9 +42,7 @@ class RoundedButton extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: Colors.white,
-            fontSize: textSize,
-            fontWeight: FontWeight.w400),
+            color: textColor, fontSize: textSize, fontWeight: FontWeight.w400),
       ),
     );
   }
