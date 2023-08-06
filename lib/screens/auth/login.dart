@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itb_cafeteria_seller/widgets/rounded_button.dart';
 import '../../model/login_model.dart';
 import '../../services/api_service.dart';
 import '../../widgets/normal_button.dart';
@@ -17,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? currentPassword;
 
   void onSubmit() async {
     if (validateAndSave()) {
@@ -61,8 +63,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Container(
           child: Form(
@@ -74,8 +74,8 @@ class _LoginPageState extends State<LoginPage> {
               margin: const EdgeInsets.only(bottom: 40),
               height: 100,
               width: 100,
-              padding: EdgeInsets.fromLTRB(20, 40, 20, 35),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.fromLTRB(20, 40, 20, 35),
+              decoration: const BoxDecoration(
                   color: greyColor,
                   borderRadius: BorderRadius.all(Radius.circular(50))),
               child: const Text("Logo",
@@ -95,52 +95,114 @@ class _LoginPageState extends State<LoginPage> {
                             const BorderRadius.all(Radius.circular(10))),
                     child: Column(
                       children: [
-                        FieldOfText(
-                          TopMargin: 40,
-                          labelText: 'E-mail Address',
-                          hintText: 'you@example.com',
-                          saveValue: email,
-                          TextCencored: false,
-                          inputType: TextInputType.emailAddress,
-                        ),
-                        FieldOfText(
-                            TopMargin: 20,
-                            labelText: 'Password',
-                            hintText: 'Enter Your Password',
-                            saveValue: password,
-                            TextCencored: true),
-                        FieldOfText(
-                            TopMargin: 20,
-                            labelText: 'Re-Enter your Password',
-                            hintText: 'Please Re-Enter your Password',
-                            saveValue: password,
-                            TextCencored: true),
+                        // Email or Username
+                        Container(
+                            margin: EdgeInsets.only(top: 40),
+                            width: 222,
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 1, color: blackColor))),
+                            child: TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                  labelText: "Email/Username",
+                                  hintText: 'you@gmail.com',
+                                  labelStyle: TextStyle(
+                                      color: halfTransparant,
+                                      fontFamily: 'inter',
+                                      fontSize: 16)),
+                              obscureText: false,
+                              onSaved: (value) => email = value,
+                            )),
+
+                        //Password
+                        Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            width: 222,
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 1, color: blackColor))),
+                            child: TextFormField(
+                              validator: (String? value) {
+                                currentPassword = value;
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  labelText: "Password",
+                                  hintText: "Enter your password",
+                                  labelStyle: TextStyle(
+                                      color: halfTransparant,
+                                      fontFamily: 'inter',
+                                      fontSize: 16)),
+                              obscureText: true,
+                              onSaved: (value) => password = value,
+                            )),
+
+                        //Password Confirmation
+                        Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            width: 222,
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 1, color: blackColor))),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value != currentPassword) {
+                                  return "Password didn't match";
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  labelText: "Confirm Password",
+                                  hintText: "Re-Enter your Password",
+                                  labelStyle: TextStyle(
+                                      color: halfTransparant,
+                                      fontFamily: 'inter',
+                                      fontSize: 16)),
+                              obscureText: true,
+                              onSaved: (value) => password = value,
+                            )),
                         SizedBox(
                           child: Container(
-                            margin: EdgeInsets.only(top: 50),
+                            margin: const EdgeInsets.only(top: 50),
                             height: 34,
                             width: 178,
                             decoration: const BoxDecoration(
                                 color: greyColor,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
-                            child: NormalButton(
-                              onPressed: onSubmit,
+                            child: RoundedButton(
+                              textSize: 16,
+                              width: 68,
+                              height: 39,
                               text: "Login",
+                              color: acceptGreen,
+                              onPressed: onSubmit,
+                              borderRadius: BorderRadius.circular(19),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        const Text("or", textAlign: TextAlign.center),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text("Don't have an account?"),
+                            const Text(
+                              "Haven't signed up?",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
                             TextButton(
                               child: const Text(
-                                "Register",
+                                "Sign in here",
                                 style: TextStyle(
-                                    decoration: TextDecoration.underline),
+                                    color: linkColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
                               ),
                               onPressed: () {
                                 Navigator.pushNamed(context, '/register');
@@ -156,41 +218,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )),
     );
-  }
-}
-
-class FieldOfText extends StatelessWidget {
-  final double TopMargin;
-  final String? labelText;
-  final String? hintText;
-  final bool TextCencored;
-  String? saveValue;
-  TextInputType? inputType = null;
-  FieldOfText(
-      {required this.TopMargin,
-      required this.labelText,
-      required this.hintText,
-      super.key,
-      required this.saveValue,
-      this.inputType,
-      required this.TextCencored});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(top: TopMargin),
-        width: 222,
-        decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(width: 1, color: blackColor))),
-        child: TextFormField(
-          keyboardType: inputType,
-          decoration: InputDecoration(
-              labelText: labelText,
-              hintText: hintText,
-              labelStyle: const TextStyle(
-                  color: Colors.black, fontFamily: 'inter', fontSize: 16)),
-          obscureText: TextCencored,
-          onSaved: (value) => saveValue = value,
-        ));
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/auth/login.dart';
 import 'screens/auth/register.dart';
-import 'screens/product/product.dart';
 import 'screens/nav/nav.dart';
 import 'services/shared_service.dart';
 
@@ -11,7 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   bool _result = await SharedService.isLoggedIn();
-  if(_result) {
+  if (_result) {
     _defaultHome = const NavPage();
   }
 
@@ -25,9 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.deepPurple,
       ),
       routes: {
@@ -36,8 +35,6 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/home': (context) => const NavPage(),
       },
-      
     );
   }
 }
-

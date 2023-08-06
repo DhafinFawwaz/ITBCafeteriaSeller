@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itb_cafeteria_seller/screens/auth/login.dart';
 import 'package:itb_cafeteria_seller/screens/kantin/kantin.dart';
 import 'package:itb_cafeteria_seller/utils/GlobalTheme.dart';
 import 'package:itb_cafeteria_seller/widgets/ink_well_button.dart';
@@ -12,9 +13,7 @@ class Product extends StatefulWidget {
   State<Product> createState() => _ProductState();
 }
 
-
 class _ProductState extends State<Product> {
-
   void loadKantin(int locationId) {
     Navigator.push(
       context,
@@ -24,68 +23,63 @@ class _ProductState extends State<Product> {
     );
   }
 
-    Widget buildFood() {
-      return Container(
+  Widget buildFood() {
+    return Container(
         child: InkWellButton(
-          onPressed: () {},
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 102,
-                decoration: BoxDecoration(
-                  color: Colors.red[400],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)
-                  )
+            onPressed: () {},
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 102,
+                  decoration: BoxDecoration(
+                      color: Colors.red[400],
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Nasi Goreng", style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text("Jumlah: 1"),
-                  ],
-                ),
-              )
-            ],
-          )
-        )
-      );
-    }
+                Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Nasi Goreng",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text("Jumlah: 1"),
+                    ],
+                  ),
+                )
+              ],
+            )));
+  }
 
-    Widget buildAdd() {
-      return Container(
+  Widget buildAdd() {
+    return Container(
         child: InkWellButton(
-          onPressed: () {},
-          child: Center(
-            child: Text("+", style: TextStyle(fontSize: 100),),
-          )
-        )
-      );
-    }
-  
-  
+            onPressed: () {},
+            child: Center(
+              child: Text(
+                "+",
+                style: TextStyle(fontSize: 100),
+              ),
+            )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomMenuBase(
       hoveringChild: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Product",
-            style: TextStyle(
-              fontSize: GlobalTheme.fontsize1,
-              fontWeight: FontWeight.bold
-            )
-          ),
-          
+          Text("Product",
+              style: TextStyle(
+                  fontSize: GlobalTheme.fontsize1,
+                  fontWeight: FontWeight.bold)),
+          FloatingActionButton(onPressed: () {
+            Navigator.pushNamed(context, "/login");
+          })
         ],
       ),
-      
       child: Container(
         margin: EdgeInsets.only(left: 20, right: 20),
         child: GridView.count(
@@ -93,7 +87,7 @@ class _ProductState extends State<Product> {
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
           children: List.generate(24, (index) {
-            if(index == 23) {
+            if (index == 23) {
               return buildAdd();
             }
             return buildFood();
