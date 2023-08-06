@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../model/register_model.dart';
 import '../../services/api_service.dart';
 import 'package:itb_cafeteria_seller/const.dart';
-import '../../widgets/normal_button.dart';
 import 'package:itb_cafeteria_seller/widgets/rounded_button.dart';
 
 class RegisterPage extends StatefulWidget {

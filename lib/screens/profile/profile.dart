@@ -13,68 +13,60 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('My Store', style: TextStyle(
-          color: Colors.black,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        )),
+        title: const Text('My Store',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            )),
         backgroundColor: Colors.white,
         elevation: 0.0,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
             Divider(
               color: Colors.grey[800],
               height: 30.0,
             ),
-            Row(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 40.0,
-                  ),
-                  SizedBox(width: 20.0),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Nama toko',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        Text(
-                          'alamat email/no telp',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15.0,
-                          ),
-                        )
-                      ]),
-                  SizedBox(width: 20.0),
-                  FloatingActionButton(
-                      onPressed: () {},
-                      backgroundColor: Colors.grey[200],
-                      elevation: 0.0,
-                      child: Text(
-                          'Edit',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black
-                          )
-                      )
-                  )
-                ]
-            ),
+            Row(children: <Widget>[
+              const CircleAvatar(
+                radius: 40.0,
+              ),
+              const SizedBox(width: 20.0),
+              const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Nama toko',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      'alamat email/no telp',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15.0,
+                      ),
+                    )
+                  ]),
+              const SizedBox(width: 20.0),
+              FloatingActionButton(
+                  onPressed: () {},
+                  backgroundColor: Colors.grey[200],
+                  elevation: 0.0,
+                  child: const Text('Edit',
+                      style: TextStyle(fontSize: 14, color: Colors.black)))
+            ]),
             Divider(
               color: Colors.grey[800],
               height: 30.0,
             ),
-            SizedBox(height: 20.0),
-            Text(
+            const SizedBox(height: 20.0),
+            const Text(
               'Pengaturan Akun',
               style: TextStyle(
                 color: Colors.black,
@@ -82,8 +74,8 @@ class _ProfileState extends State<Profile> {
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 20.0),
-            Row(
+            const SizedBox(height: 20.0),
+            const Row(
               children: <Widget>[
                 Icon(
                   Icons.money,
@@ -111,8 +103,8 @@ class _ProfileState extends State<Profile> {
                     ]),
               ],
             ),
-            SizedBox(height: 20.0),
-            Row(
+            const SizedBox(height: 20.0),
+            const Row(
               children: <Widget>[
                 Icon(
                   Icons.location_city,
@@ -140,8 +132,8 @@ class _ProfileState extends State<Profile> {
                     ]),
               ],
             ),
-            SizedBox(height: 20.0),
-            Row(
+            const SizedBox(height: 20.0),
+            const Row(
               children: <Widget>[
                 Icon(
                   Icons.security,
@@ -169,8 +161,8 @@ class _ProfileState extends State<Profile> {
                     ]),
               ],
             ),
-            SizedBox(height: 20.0),
-            Row(
+            const SizedBox(height: 20.0),
+            const Row(
               children: <Widget>[
                 Icon(
                   Icons.privacy_tip,
@@ -198,8 +190,8 @@ class _ProfileState extends State<Profile> {
                     ]),
               ],
             ),
-            SizedBox(height: 20.0),
-            Row(
+            const SizedBox(height: 20.0),
+            const Row(
               children: <Widget>[
                 Icon(
                   Icons.notification_add,
@@ -227,8 +219,8 @@ class _ProfileState extends State<Profile> {
                     ]),
               ],
             ),
-            SizedBox(height: 20.0),
-            Row(
+            const SizedBox(height: 20.0),
+            const Row(
               children: <Widget>[
                 Icon(
                   Icons.logout,
@@ -259,7 +251,6 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
-
     );
   }
 }
