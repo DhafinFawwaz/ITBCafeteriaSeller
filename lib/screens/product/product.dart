@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:itb_cafeteria_seller/model/product/product_model.dart';
 import 'package:itb_cafeteria_seller/screens/auth/login.dart';
 import 'package:itb_cafeteria_seller/screens/kantin/kantin.dart';
+import 'package:itb_cafeteria_seller/screens/product/product_add.dart';
+import 'package:itb_cafeteria_seller/services/api_service.dart';
 import 'package:itb_cafeteria_seller/utils/GlobalTheme.dart';
 import 'package:itb_cafeteria_seller/widgets/ink_well_button.dart';
 import 'package:itb_cafeteria_seller/widgets/normal_button.dart';
+import '../../widgets/custom_menu.dart';
 import '../../widgets/custom_menu_base.dart';
+import '../profile/profile_edit.dart';
 
 class Product extends StatefulWidget {
   const Product({super.key});
@@ -23,29 +28,50 @@ class _ProductState extends State<Product> {
     );
   }
 
-  Widget buildFood() {
+  ProductResponse? response;
+
+  void refresh() async {
+    response = await APIService.getOwnedProduct();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refresh();
+  }
+
+  void onAddProduct() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => ProductAdd(),
+      ),
+    ).then((_) {
+      setState(() {});
+    });
+  }
+
+
+
+  Widget buildFood(String name, String price, String quantity, String imageLink, String description) {
     return Container(
         child: InkWellButton(
             onPressed: () {},
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 102,
-                  decoration: BoxDecoration(
-                      color: Colors.red[400],
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                ),
+                Image.network(imageLink, fit: BoxFit.cover),
                 Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.only(top: 15, left: 15, right: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Nasi Goreng",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text("Jumlah: 1"),
+                      Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      SizedBox(height: 2,),
+                      Text('Stock: ' + quantity),
+                      SizedBox(height: 2,),
+                      Text('Rp ' + price),
                     ],
                   ),
                 )
@@ -56,7 +82,7 @@ class _ProductState extends State<Product> {
   Widget buildAdd() {
     return Container(
         child: InkWellButton(
-            onPressed: () {},
+            onPressed: onAddProduct,
             child: Center(
               child: Text(
                 "+",
@@ -67,7 +93,10 @@ class _ProductState extends State<Product> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomMenuBase(
+    return CustomMenu(
+      bottomHoverHeight: 0,
+      topHoverHeight: 130,
+      
       hoveringChild: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,9 +104,6 @@ class _ProductState extends State<Product> {
               style: TextStyle(
                   fontSize: GlobalTheme.fontsize1,
                   fontWeight: FontWeight.bold)),
-          FloatingActionButton(onPressed: () {
-            Navigator.pushNamed(context, "/login");
-          })
         ],
       ),
       child: Container(
@@ -86,12 +112,24 @@ class _ProductState extends State<Product> {
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
-          children: List.generate(24, (index) {
-            if (index == 23) {
-              return buildAdd();
-            }
-            return buildFood();
-          }),
+          childAspectRatio: 0.8,
+          children: response == null
+              ? [buildAdd()]
+              :
+          
+            List.generate(response!.data.length + 1, (index) {
+              if (index == response!.data.length) {
+                return buildAdd();
+              }
+                return buildFood(
+                  response!.data[index].name,
+                  response!.data[index].price.toString(),
+                  response!.data[index].quantity.toString(),
+                  response!.data[index].image,
+                  response!.data[index].description
+                );
+              }
+            ),
         ),
       ),
     );

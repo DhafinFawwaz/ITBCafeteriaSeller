@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:itb_cafeteria_seller/model/product/product_add_model.dart';
+import 'package:itb_cafeteria_seller/model/product/product_model.dart';
 
 import '../config/config.dart';
+import '../model/cart/cart_model.dart';
 import '../model/login_model.dart';
 import '../model/profile/profile_edit_model.dart';
 import '../model/profile/profile_model.dart';
@@ -109,6 +113,63 @@ class APIService {
 
     var response = await http.Response.fromStream(streamedResponse);
     return jsonDecode(response.body)["data"]["image"];
+  }
+
+  static Future<ProductResponse> getOwnedProduct() async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.data!.token}',
+    };
+
+    var url = Uri.parse('${Config.ownedProductURL}?shop_id=${loginDetails.data!.id}');
+    
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    return ProductResponse.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<CartResponse> getOnHoldCart() async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.data!.token}',
+    };
+
+    var url = Uri.parse('${Config.cartOrderURL}?shop_id=${loginDetails.data!.id}');
+    
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    return CartResponse.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<ProductAddResponse> addProduct(ProductAddRequest model) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.data!.token}',
+    };
+
+    var uri = Uri.parse(Config.addProductURL);
+    model.shopId = loginDetails.data!.id;
+
+    var response = await client.post(
+      uri,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+
+    return ProductAddResponse.fromJson(jsonDecode(response.body));
   }
 
 }
