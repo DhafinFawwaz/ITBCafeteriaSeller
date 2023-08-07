@@ -28,4 +28,10 @@ class StaticData {
     'CRCS', 
     'Saraga'
   ];
+
+  static const categoryById = [
+    'Makanan', 
+    'Minuman', 
+    'Lainnya',
+  ];
 }
