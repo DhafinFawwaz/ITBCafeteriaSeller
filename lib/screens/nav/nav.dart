@@ -6,7 +6,6 @@ import 'package:itb_cafeteria_seller/screens/profile/profile.dart';
 import 'package:itb_cafeteria_seller/screens/order/order.dart';
 import 'package:itb_cafeteria_seller/services/api_service.dart';
 import 'package:itb_cafeteria_seller/screens/Home/sellerHome.dart';
-import '../../utils/GlobalTheme.dart';
 
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
@@ -58,6 +57,7 @@ class _NavPageState extends State<NavPage> {
       child: Scaffold(
           bottomNavigationBar: BottomAppBar(
             elevation: 0,
+            color: Color(0xffF3F3F3),
             child: TabBar(
               isScrollable: true,
               labelColor: orangeColor,
