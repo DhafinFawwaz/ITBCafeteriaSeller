@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itb_cafeteria_seller/const.dart';
+import 'package:itb_cafeteria_seller/screens/order/statusOrder.dart';
+import 'package:itb_cafeteria_seller/widgets/rounded_button.dart';
 
 class Order_Product extends StatefulWidget {
   @override
@@ -51,7 +53,17 @@ class Product extends StatelessWidget {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(namaProduk,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-              Text("Jumlah : $jumlah")
+              Text("Jumlah : $jumlah"),
+              RoundedButton(
+                  text: "Status",
+                  borderRadius: BorderRadius.circular(22),
+                  color: Color(0xffF87328),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => StatusOrder()));
+                  },
+                  height: 23,
+                  width: 98)
             ])),
       ],
     );
