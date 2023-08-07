@@ -36,27 +36,6 @@ class BottomTab extends StatelessWidget {
 
 class _NavPageState extends State<NavPage> {
 
-  Widget userProfile() {
-    return FutureBuilder(
-      future: APIService.getUserProfile(),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if(snapshot.hasData) {
-          return Column(
-            children: [
-              Text(snapshot.data!),
-            ],
-          );
-        }
-        return const Center(
-          child: CircularProgressIndicator()
-        );
-      }
-    );
-  }
-
-  
-
-
   @override
   Widget build(BuildContext context) {
     // hello world in middle text
