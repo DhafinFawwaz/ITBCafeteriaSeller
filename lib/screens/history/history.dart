@@ -39,9 +39,7 @@ class _HistoryState extends State<History> {
                       children: [
                         Text("Selesai", style: TextStyle(fontWeight: FontWeight.w800),),
                         SizedBox(height: 3),
-                        Text("Pesanan A-120412"),
-                        SizedBox(height: 6),
-                        Text("29 Feb 09:23 AM"),
+                        Text("Pesanan A-120412")
                       ],
                     ),
                   ]
