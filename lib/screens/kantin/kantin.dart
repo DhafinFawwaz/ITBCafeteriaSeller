@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:itb_cafeteria_seller/data/StaticData.dart';
 import 'package:itb_cafeteria_seller/widgets/custom_menu.dart';
 import 'package:itb_cafeteria_seller/widgets/normal_button.dart';
 
@@ -14,13 +15,6 @@ class KantinPage extends StatefulWidget {
 }
 
 class _KantinPageState extends State<KantinPage> {
-
-  String getLocation(int locationId) {
-    if(locationId == 1) return "Kantin GKUB";
-    else if(locationId == 2) return "Kantin GKUT";
-    else if(locationId == 3) return "Kantin Depan";
-    else return "Kantin Depan";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +86,7 @@ class _KantinPageState extends State<KantinPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            getLocation(widget.locationId),
+            StaticData.getLocationById(widget.locationId),
             style: TextStyle(
               fontSize: GlobalTheme.fontsize1,
               fontWeight: FontWeight.bold

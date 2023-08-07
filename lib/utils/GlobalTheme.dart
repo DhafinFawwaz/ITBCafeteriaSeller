@@ -9,7 +9,10 @@ class GlobalTheme {
   static const slate800 = Color(0xff1e293b);
   static const slate900 = Color(0xff0f172a);
 
+  static const primaryColor = Color(0xFFF87328);
+
   static const padding1 = 20.0;
+  static const padding2 = 12.0;
   static const fontsize1 = 30.0;
   static const fontsize2 = 18.0;
   static const fontsize3 = 15.0;

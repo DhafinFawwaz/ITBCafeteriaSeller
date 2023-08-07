@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../model/register_model.dart';
 import '../../services/api_service.dart';
-import '../../widgets/floating_back_button.dart';
-import '../../widgets/normal_button.dart';
+import 'package:itb_cafeteria_seller/const.dart';
+import 'package:itb_cafeteria_seller/widgets/rounded_button.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -19,44 +19,49 @@ class _RegisterPageState extends State<RegisterPage> {
   String? email;
   String? telephone;
   String? password;
+  String? confirmPassword;
+  String? currentPassword = "";
 
-  void onSubmit()
-  {
-    
-    if(validateAndSave()) {
+  void onSubmit() {
+    if (validateAndSave()) {
       setState(() {
         isAPIcallProcess = true;
       });
 
-      RegisterRequest model = RegisterRequest(username: username!, email: email!, telephone: telephone!, password: password!);
+      RegisterRequest model = RegisterRequest(
+          username: username!,
+          email: email!,
+          telephone: "",
+          password: password!,
+          locationId: 1
+        );
 
       APIService.register(model).then((response) => {
-        setState(() {
-          isAPIcallProcess = false;
-        }),
-        if(response.message != "success") {
-          onRegisterSuccess(response)
-        }
-        else {
-          onRegisterFailed(response)
-        }
-      });
+            setState(() {
+              isAPIcallProcess = false;
+            }),
+            if (response.message != "success")
+              {onRegisterSuccess(response)}
+            else
+              {onRegisterFailed(response)}
+          });
     }
   }
-  
+
   void onRegisterFailed(RegisterResponse response) {
     var snackBar = SnackBar(
       content: Text(response.message),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
   void onRegisterSuccess(RegisterResponse response) {
     var snackBar = SnackBar(
       content: Text(response.message),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-  
+
   bool validateAndSave() {
     final FormState? form = _formKey.currentState;
     if (form!.validate()) {
@@ -68,102 +73,192 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-
     return Scaffold(
-      body:  Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  
-                  const SizedBox(height: 60),
-                  const Text(
-                    "Register",
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    keyboardType: TextInputType.name, // Use email input type for emails.
-                    decoration: InputDecoration(
-                      hintText: 'your name',
-                      labelText: 'Username'
-                    ),
-                    onSaved: (value) => username = value,
-
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress, // Use email input type for emails.
-                    decoration: InputDecoration(
-                      hintText: 'you@example.com',
-                      labelText: 'E-mail Address'
-                    ),
-                    onSaved: (value) => email = value,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.phone, // Use email input type for emails.
-                    decoration: InputDecoration(
-                      hintText: '08123456789',
-                      labelText: 'Phone Number'
-                    ),
-                    onSaved: (value) => telephone = value,
-                  ),
-                  TextFormField(
-                    obscureText: true, // Use secure text for passwords.
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      labelText: 'Enter your password'
-                    ),
-                    onSaved: (value) => password = value,
-                  ),
-                  const SizedBox(height: 20),
-                  NormalButton(
-                      text: "Register",
-                      onPressed: onSubmit
-                  ),
-                  const SizedBox(height: 10),
-                  const Center(
-                    child: Text("or", textAlign: TextAlign.center),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: <Widget>[
+            UnconstrainedBox(
+                child: Container(
+              margin: const EdgeInsets.only(bottom: 40),
+              height: 100,
+              width: 100,
+              padding: const EdgeInsets.fromLTRB(20, 40, 20, 35),
+              decoration: const BoxDecoration(
+                  color: greyColor,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: const Text("Logo",
+                  textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
+            )),
+            UnconstrainedBox(
+              child: SizedBox(
+                height: 428,
+                width: 302,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: blackColor,
+                          width: 1.0,
+                          style: BorderStyle.solid),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
+                  child: Column(
                     children: [
-                      const Text("Already have an account?"),
-                      TextButton(
-                        child: const Text("Login",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline
+                      // Username
+                      Container(
+                        margin: EdgeInsets.only(top: 40),
+                        width: 222,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(width: 1, color: blackColor))),
+                        child: TextFormField(
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                              labelText: "Username",
+                              hintText: 'Your name',
+                              labelStyle: TextStyle(
+                                  color: halfTransparant,
+                                  fontFamily: 'inter',
+                                  fontSize: 16)),
+                          obscureText: false,
+                          onSaved: (value) => username = value,
+                        ),
+                      ),
+                      // Email
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        width: 222,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(width: 1, color: blackColor))),
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                              labelText: "Email Address",
+                              hintText: 'you@gmail.com',
+                              labelStyle: TextStyle(
+                                  color: halfTransparant,
+                                  fontFamily: 'inter',
+                                  fontSize: 16)),
+                          obscureText: false,
+                          onSaved: (value) => email = value,
+                        ),
+                      ),
+
+                      //Password
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        width: 222,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(width: 1, color: blackColor))),
+                        child: TextFormField(
+                          validator: (value) {
+                            password = value;
+                            if (value != null && value.isEmpty) {
+                              return "Password is Empty";
+                            }
+
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                              labelText: "Password",
+                              hintText: 'Enter your Password',
+                              labelStyle: TextStyle(
+                                  color: halfTransparant,
+                                  fontFamily: 'inter',
+                                  fontSize: 16)),
+                          obscureText: false,
+                          onSaved: (value) => password = value,
+                        ),
+                      ),
+
+                      //Comfirm Password
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        width: 222,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                                bottom:
+                                    BorderSide(width: 1, color: blackColor))),
+                        child: TextFormField(
+                        validator: (value) {
+                          confirmPassword = value;
+                          if (value != null && value.isEmpty) {
+                            return "Password is Empty";
+                          } else {
+                            if (value != password) {
+                              return "Password doesn't match";
+                            }
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                            labelText: "Confirm Password",
+                            hintText: 'Confirm your Password',
+                            labelStyle: TextStyle(
+                                color: halfTransparant,
+                                fontFamily: 'inter',
+                                fontSize: 16)),
+                        obscureText: false,
+                        onSaved: (value) => confirmPassword = value,
+                        ),
+                      ),
+                      SizedBox(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          height: 34,
+                          width: 178,
+                          decoration: const BoxDecoration(
+                              color: greyColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: RoundedButton(
+                            textSize: 16,
+                            width: 68,
+                            height: 39,
+                            text: "Register",
+                            color: acceptGreen,
+                            onPressed: onSubmit,
+                            borderRadius: BorderRadius.circular(19),
+                            textColor: halfTransparantWhite,
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already Signed up?",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
+                          TextButton(
+                            child: const Text(
+                              "Login here",
+                              style: TextStyle(
+                                  color: linkColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
                       )
                     ],
-                  )
-                
-                ],
+                  ),
+                ),
               ),
             ),
-
-          ),
-          
-          Positioned(
-            top: 20,
-            left: 10,
-            child: FloatingBackButton(Colors.black),
-          ),
-        ],
-      )
-      
-      
+          ],
+        ),
+      ),
     );
   }
 }
