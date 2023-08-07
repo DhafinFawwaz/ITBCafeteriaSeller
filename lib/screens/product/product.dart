@@ -75,9 +75,6 @@ class _ProductState extends State<Product> {
               style: TextStyle(
                   fontSize: GlobalTheme.fontsize1,
                   fontWeight: FontWeight.bold)),
-          FloatingActionButton(onPressed: () {
-            Navigator.pushNamed(context, "/login");
-          })
         ],
       ),
       child: Container(
