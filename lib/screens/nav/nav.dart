@@ -23,7 +23,7 @@ class BottomTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(15),
       child: Tab(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,12 +34,11 @@ class BottomTab extends StatelessWidget {
 }
 
 class _NavPageState extends State<NavPage> {
-
   @override
   Widget build(BuildContext context) {
     // hello world in middle text
     return const DefaultTabController(
-      length: 5,
+      length: 4,
       child: Scaffold(
           bottomNavigationBar: BottomAppBar(
             elevation: 0,
@@ -50,10 +49,6 @@ class _NavPageState extends State<NavPage> {
               unselectedLabelColor: blackColor,
               indicatorColor: orangeColor,
               tabs: [
-                BottomTab(
-                  icon: Icons.home,
-                  text: "Home",
-                ),
                 BottomTab(icon: Icons.fastfood_outlined, text: "Product"),
                 BottomTab(icon: Icons.art_track_sharp, text: "Order"),
                 BottomTab(icon: Icons.history, text: "History"),
@@ -63,7 +58,6 @@ class _NavPageState extends State<NavPage> {
           ),
           body: TabBarView(
             children: [
-              Home(),
               Product(),
               Order(),
               History(),
