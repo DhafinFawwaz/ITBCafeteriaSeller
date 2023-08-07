@@ -18,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   String? email;
   String? password;
   String? username;
-  String? currentPassword;
 
   void onSubmit() async {
     if (validateAndSave()) {
@@ -125,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
                                       BorderSide(width: 1, color: blackColor))),
                           child: TextFormField(
                             validator: (String? value) {
-                              currentPassword = value;
                               return null;
                             },
                             decoration: const InputDecoration(
@@ -139,31 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                             onSaved: (value) => password = value,
                           )),
 
-                      //Password Confirmation
-                      Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          width: 222,
-                          decoration: const BoxDecoration(
-                              border: Border(
-                                  bottom:
-                                      BorderSide(width: 1, color: blackColor))),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value != currentPassword) {
-                                return "Password didn't match";
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                                labelText: "Confirm Password",
-                                hintText: "Re-Enter your Password",
-                                labelStyle: TextStyle(
-                                    color: halfTransparant,
-                                    fontFamily: 'inter',
-                                    fontSize: 16)),
-                            obscureText: true,
-                            onSaved: (value) => password = value,
-                          )),
                       SizedBox(
                         child: Container(
                           margin: const EdgeInsets.only(top: 50),

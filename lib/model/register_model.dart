@@ -8,17 +8,20 @@ class RegisterRequest {
     required this.username,
     required this.password,
     required this.email,
+    required this.locationId,
     required this.telephone,
   });
   late final String username;
   late final String password;
   late final String email;
+  late final int locationId;
   late final String telephone;
   
   RegisterRequest.fromJson(Map<String, dynamic> json){
     username = json['username'];
     password = json['password'];
     email = json['email'];
+    locationId = json['location_id'];
     telephone = json['telephone'];
   }
 
@@ -27,6 +30,7 @@ class RegisterRequest {
     _data['username'] = username;
     _data['password'] = password;
     _data['email'] = email;
+    _data['location_id'] = locationId;
     _data['telephone'] = telephone;
     return _data;
   }

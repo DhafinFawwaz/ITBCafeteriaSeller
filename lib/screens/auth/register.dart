@@ -19,7 +19,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String? email;
   String? telephone;
   String? password;
-  var currentPassword;
+  String? confirmPassword;
+  String? currentPassword = "";
 
   void onSubmit() {
     if (validateAndSave()) {
@@ -30,8 +31,10 @@ class _RegisterPageState extends State<RegisterPage> {
       RegisterRequest model = RegisterRequest(
           username: username!,
           email: email!,
-          telephone: telephone!,
-          password: password!);
+          telephone: "",
+          password: password!,
+          locationId: 1
+        );
 
       APIService.register(model).then((response) => {
             setState(() {
@@ -154,7 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     BorderSide(width: 1, color: blackColor))),
                         child: TextFormField(
                           validator: (value) {
-                            currentPassword = value;
+                            password = value;
                             if (value != null && value.isEmpty) {
                               return "Password is Empty";
                             }
@@ -182,28 +185,27 @@ class _RegisterPageState extends State<RegisterPage> {
                                 bottom:
                                     BorderSide(width: 1, color: blackColor))),
                         child: TextFormField(
-                          validator: (value) {
-                            currentPassword = value;
-                            if (value != null && value.isEmpty) {
-                              return "Password is Empty";
-                            } else {
-                              if (value != currentPassword) {
-                                return "Password doesn't match";
-                              }
+                        validator: (value) {
+                          confirmPassword = value;
+                          if (value != null && value.isEmpty) {
+                            return "Password is Empty";
+                          } else {
+                            if (value != password) {
+                              return "Password doesn't match";
                             }
-
-                            return null;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                              labelText: "Confirm Password",
-                              hintText: 'Confirm your Password',
-                              labelStyle: TextStyle(
-                                  color: halfTransparant,
-                                  fontFamily: 'inter',
-                                  fontSize: 16)),
-                          obscureText: false,
-                          onSaved: (value) => password = value,
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                            labelText: "Confirm Password",
+                            hintText: 'Confirm your Password',
+                            labelStyle: TextStyle(
+                                color: halfTransparant,
+                                fontFamily: 'inter',
+                                fontSize: 16)),
+                        obscureText: false,
+                        onSaved: (value) => confirmPassword = value,
                         ),
                       ),
                       SizedBox(
