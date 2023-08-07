@@ -7,10 +7,23 @@ class Order_Product extends StatefulWidget {
 }
 
 class _Order_ProductState extends State<Order_Product> {
+  final List<int> listjumlah = [10, 20, 10, 5];
+  final List<String> listProduk = [
+    "Nasi Goreng",
+    "Mie Goreng",
+    "Aqua",
+    "Sate Goreng"
+  ];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold();
+    return Scaffold(
+        body: Container(
+            margin: const EdgeInsets.only(left: 30, top: 20),
+            child: ListView(children: [
+              for (var i = 0; i < listProduk.length; i++)
+                Product(jumlah: listjumlah[i], namaProduk: listProduk[i])
+            ])));
   }
 }
 
@@ -25,15 +38,15 @@ class Product extends StatelessWidget {
       children: [
         Container(
             margin: EdgeInsets.only(top: 20),
-            width: 61,
-            height: 60,
-            color: Color(0xffFF7676)),
+            width: 92,
+            height: 93,
+            color: greyColor),
         Container(
             padding: EdgeInsets.only(left: 10, top: 5),
             margin: EdgeInsets.only(top: 20),
-            width: 300,
-            height: 60,
-            color: greyColor,
+            width: 250,
+            height: 93,
+            color: Color(0xfff3f3f3),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(namaProduk,
