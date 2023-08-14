@@ -48,35 +48,42 @@ class _ProductState extends State<Product> {
         builder: (BuildContext context) => ProductAdd(),
       ),
     ).then((_) {
-      setState(() {});
+      refresh();
     });
   }
 
 
 
   Widget buildFood(String name, String price, String quantity, String imageLink, String description) {
-    return Container(
-        child: InkWellButton(
-            onPressed: () {},
-            child: Column(
+    return InkWellButton(
+        onPressed: () {},
+        child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(imageLink, fit: BoxFit.cover),
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  child: Center(child: Image.network(imageLink, fit: BoxFit.cover, width: 170, height: 120,)),
+                ),
+                
                 Padding(
                   padding: EdgeInsets.only(top: 15, left: 15, right: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                       SizedBox(height: 2,),
-                      Text('Stock: ' + quantity),
+                      Text('Stock: ' + quantity, style: const TextStyle(fontSize: 12)),
                       SizedBox(height: 2,),
-                      Text('Rp ' + price),
+                      Text('Rp ' + price, style: const TextStyle(fontSize: 12)),
                     ],
                   ),
                 )
               ],
-            )));
+            ),
+      );
   }
 
   Widget buildAdd() {
@@ -93,44 +100,37 @@ class _ProductState extends State<Product> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomMenu(
-      bottomHoverHeight: 0,
-      topHoverHeight: 130,
-      
-      hoveringChild: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Product",
-              style: TextStyle(
-                  fontSize: GlobalTheme.fontsize1,
-                  fontWeight: FontWeight.bold)),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Product", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900)),
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
-      child: Container(
-        margin: EdgeInsets.only(left: 20, right: 20),
-        child: GridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
-          childAspectRatio: 0.8,
-          children: response == null
-              ? [buildAdd()]
-              :
-          
-            List.generate(response!.data.length + 1, (index) {
-              if (index == response!.data.length) {
-                return buildAdd();
-              }
-                return buildFood(
-                  response!.data[index].name,
-                  response!.data[index].price.toString(),
-                  response!.data[index].quantity.toString(),
-                  response!.data[index].image,
-                  response!.data[index].description
-                );
-              }
-            ),
-        ),
+      body: GridView.count(
+        padding: EdgeInsets.all(20),
+        crossAxisCount: 2,
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
+        childAspectRatio: 0.8,
+        
+        children: response == null
+            ? [buildAdd()]
+            :
+        
+          List.generate(response!.data.length + 1, (index) {
+            if (index == response!.data.length) {
+              return buildAdd();
+            }
+              return buildFood(
+                response!.data[index].name,
+                response!.data[index].price.toString(),
+                response!.data[index].quantity.toString(),
+                response!.data[index].image,
+                response!.data[index].description
+              );
+            }
+          ),
       ),
     );
   }

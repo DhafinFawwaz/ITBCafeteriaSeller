@@ -90,7 +90,6 @@ class _OrderState extends State<Order> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return DefaultTabController(
         initialIndex: 0,
         length: 2,
@@ -100,23 +99,6 @@ class _OrderState extends State<Order> {
             children: [
               SizedBox(
                 height: 40,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 30),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [BoxShadow(blurRadius: 5)]),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Color(0xffFFFFFF),
-                  child: Container(
-                    width: double.infinity,
-                    height: 17,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/LeftArrow.png'))),
-                  ),
-                ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10, left: 30),

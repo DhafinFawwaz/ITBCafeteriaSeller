@@ -25,6 +25,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+
     if(StaticData.profileData.message == "")
     {
       getUserProfile();
@@ -109,37 +110,44 @@ class _ProfileState extends State<Profile> {
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '${data.username}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w600
-                        ),
-                      ),
-                      Text(
-                        '${data.email}/${data.telephone}',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13.0,
-                        ),
-                      ),
-                      Text(
-                        "${StaticData.getLocationById(data.locationId)}",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.0,
-                        ),
-                      ),
+                            
                       Container(
                         width: 150,
-                        child: Text(
-                        'Menjual berbagai makanan dan minuman',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            
+                            Text(
+                              '${data.username}',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                            Text(
+                              '${data.email}/${data.telephone}',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13.0,
+                              ),
+                            ),
+                            Text(
+                              "${StaticData.getLocationById(data.locationId)}",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                            Text(
+                              data.description,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          ],
                         ),
-                      )
                       )
                     ]),
                 const SizedBox(width: 20.0),

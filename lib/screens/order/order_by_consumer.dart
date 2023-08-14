@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:itb_cafeteria_seller/model/cart/cart_model.dart';
 import 'package:itb_cafeteria_seller/services/api_service.dart';
-import 'package:itb_cafeteria_seller/const.dart';
-import 'package:itb_cafeteria_seller/widgets/rounded_button.dart';
-import 'package:itb_cafeteria_seller/screens/order/statusOrder.dart';
+
+import 'package:itb_cafeteria_seller/utils/GlobalTheme.dart';
+import 'package:itb_cafeteria_seller/widgets/rounded_button2.dart';
+
+import '../../model/cart/edit_cart_status_model.dart';
+
 
 class Order_Consumer extends StatefulWidget {
   @override
@@ -27,105 +30,170 @@ class _Order_ConsumerState extends State<Order_Consumer> {
     refresh();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    // return Scaffold(
-    //   body: Center(
-    //     child:
-    //       cartResponse == null ? const Center(child: CircularProgressIndicator()) : Text(cartResponse!.data!.length.toString()),
-    //   ),
-    // );
-    return Scaffold(
-        body: Container(
-            margin: const EdgeInsets.only(left: 30, top: 20),
-            child: ListView(children: [
-              for (var i = 0; i < listNama.length; i++)
-                Consume(
-                  jumlah: listProduct[i],
-                  namaProduk: listNama[i],
-                  payDescription: description[i],
-                )
-            ])));
+  Widget statusButton(String title, String subtitle, bool isActive, VoidCallback onTap) {
+    return InkWell(
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(15),
+          child: ListTile(
+            title: Text(title, style: TextStyle(fontWeight: FontWeight.w700),),
+            subtitle: Text(subtitle),
+            trailing: isActive ? Icon(Icons.circle_rounded) : Icon(Icons.circle_outlined),
+          ),
+        ),
+      ),
+    );
   }
-}
 
-class Consume extends StatelessWidget {
-  final String jumlah;
-  final String namaProduk;
-  final String payDescription;
-  const Consume(
-      {super.key,
-      required this.jumlah,
-      required this.namaProduk,
-      required this.payDescription});
+  void onUbahStatus (Data data, int statusId) async {
+    await APIService.editCartStatus(
+      EditCartStatusRequest(
+        id: data.id, 
+        cartStatusId: statusId
+      )
+    );
+    
+    cartResponse = await APIService.getOnHoldCart();
+    setState(() {
+      
+    });
+  }
+
+  void onShowBottomSheet (Data data) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      backgroundColor: GlobalTheme.slate200, // <-- SEE HERE
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) => SizedBox(
+            height: 280,
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  statusButton("Pending", "Sudah dipeasn, sedang dibuat", data.cartStatusId == 2, () {onUbahStatus(data, 2);}),
+                  const SizedBox(height: 15,),
+                  statusButton("Selesai", "Pesanan sudah selesai dibuat, bisa diambil", data.cartStatusId == 3, () {onUbahStatus(data, 3);}),
+                  const SizedBox(height: 15,),
+                  statusButton("History", "Pesanan sudah diambil", data.cartStatusId == 4, () {onUbahStatus(data, 4);}),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-            padding: EdgeInsets.only(left: 10, top: 5),
-            margin: EdgeInsets.only(top: 20),
-            width: 350,
-            height: 100,
-            decoration: BoxDecoration(
-                color: Color(0xfff3f3f3),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: greyColor)),
-            child: Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10, top: 5),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(namaProduk,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w700)),
-                        Container(
-                            margin: EdgeInsets.only(top: 5),
-                            child: Text(
-                              "Jumlah : $jumlah",
-                              style: TextStyle(fontWeight: FontWeight.w300),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: Text("Metode Pembayaran: $payDescription"),
-                        )
-                      ]),
-                ),
-                Spacer(),
-                Container(
-                  margin: EdgeInsets.only(right: 10, top: 5),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Pending",
-                        style: TextStyle(color: Colors.red),
+
+    return Scaffold(
+      body: Center(
+        child: 
+          cartResponse == null ? const Center(child: CircularProgressIndicator()) 
+          : 
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: GlobalTheme.padding1, vertical: 5),
+            child: ListView.builder(
+              
+              itemCount: cartResponse!.data!.length,
+              itemBuilder: (context, index) =>  Material(
+                  color: GlobalTheme.slate200,
+                  borderRadius: BorderRadius.circular(15),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(15),
+                    onTap: () {
+                      print("object");
+                    },
+                    child: Container(
+                      
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+
+                          children: [
+                            Container(
+                              width: 200,
+                              child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                  Text(cartResponse!.data![index].username, style: TextStyle(fontWeight: FontWeight.bold),),
+                                  const SizedBox(height: 4),
+                                  getAllOrder(cartResponse!.data![index]),
+                                  const SizedBox(height: 8),
+                                  getTimeMessage(cartResponse!.data![index].pickupAt),
+                                  const SizedBox(height: 2),
+                                  getPaymentMessage(cartResponse!.data![index].paymentMethodId),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              
+                              children: [
+                                  getCartStatus(cartResponse!.data![index].cartStatusId),
+                                  
+                                  RoundedButton2(text: "Ubah Status", borderRadius: BorderRadius.circular(50), 
+                                    textColor: Colors.white, onPressed: () {onShowBottomSheet(cartResponse!.data![index]);}, height: 14, width: 77
+                                  ),
+                                ],
+                              ),
+                            
+                          ]
+
+
+                        ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      RoundedButton(
-                          text: "Ubah Status",
-                          borderRadius: BorderRadius.circular(22),
-                          color: Color(0xffF87328),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StatusOrder()));
-                          },
-                          height: 23,
-                          width: 98)
-                    ],
+                    ),
                   ),
-                )
-              ],
-            )),
-      ],
+              ),
+            ),
+          )
+      
+      
+      ),
     );
   }
 }
+
+getCartStatus(int cartStatusId) {
+  if(cartStatusId == 1) return Text("Di keranjang", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w900));
+  if(cartStatusId == 2) return Text("Pending", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w900));
+  if(cartStatusId == 3) return Text("Selesai", style: TextStyle(color: Colors.green, fontWeight: FontWeight.w900));
+  return Text("History");
+}
+
+
+
+
+
+getAllOrder(Data data) {
+  String message = "";
+  for(int i = 0; i < data.orderItem.length; i++) {
+    message += data.orderItem[i].quantity.toString() + " " + data.orderItem[i].productName + " + ";
+  }
+  
+  return Text(message.substring(0, message.length - 3));
+}
+
+getTimeMessage(String pickupAt) {
+  return Text(pickupAt, style: TextStyle(color: Colors.black));
+}
+
+getPaymentMessage(int paymentMethodId) {
+  return Text('Metode pembayaran: ${(paymentMethodId == 0) ? 'Cash' : (paymentMethodId == 1) ? 'GOPAY': 'QRIS'}', style: const TextStyle(color: Colors.black));
+}
+
+

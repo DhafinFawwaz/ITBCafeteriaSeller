@@ -67,18 +67,12 @@ class _LoginPageState extends State<LoginPage> {
       key: _formKey,
       child: ListView(
         children: <Widget>[
-          UnconstrainedBox(
-              child: Container(
-            margin: const EdgeInsets.only(bottom: 40),
+          const SizedBox(height: 20,),
+          Image.asset(
+            'assets/images/icon/icon.png',
             height: 100,
-            width: 100,
-            padding: const EdgeInsets.fromLTRB(20, 40, 20, 35),
-            decoration: const BoxDecoration(
-                color: greyColor,
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-            child: const Text("Logo",
-                textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
-          )),
+          ),
+          const SizedBox(height: 20,),
           UnconstrainedBox(
             child: SizedBox(
                 height: 428,

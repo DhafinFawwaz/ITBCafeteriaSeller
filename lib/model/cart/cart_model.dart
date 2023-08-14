@@ -21,6 +21,7 @@ class CartResponse {
 
 class Data {
   Data({
+    required this.id,
     required this.userId,
     required this.shopId,
     required this.username,
@@ -33,6 +34,7 @@ class Data {
     required this.note,
     required this.orderItem,
   });
+  late final int id;
   late final int userId;
   late final int shopId;
   late final String username;
@@ -46,6 +48,7 @@ class Data {
   late final List<OrderItem> orderItem;
   
   Data.fromJson(Map<String, dynamic> json){
+    id = json['id'];
     userId = json['user_id'];
     shopId = json['shop_id'];
     username = json['shop_name'];
@@ -61,6 +64,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
+    _data['id'] = id;
     _data['user_id'] = userId;
     _data['shop_id'] = shopId;
     _data['shop_name'] = username;

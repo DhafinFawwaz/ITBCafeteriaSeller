@@ -4,8 +4,6 @@ import 'package:itb_cafeteria_seller/screens/product/product.dart';
 import 'package:itb_cafeteria_seller/screens/history/history.dart';
 import 'package:itb_cafeteria_seller/screens/profile/profile.dart';
 import 'package:itb_cafeteria_seller/screens/order/order.dart';
-import 'package:itb_cafeteria_seller/services/api_service.dart';
-import 'package:itb_cafeteria_seller/screens/Home/sellerHome.dart';
 
 class NavPage extends StatefulWidget {
   const NavPage({super.key});
@@ -23,12 +21,20 @@ class BottomTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Tab(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Icon(icon), Text(text)],
-      )),
+    padding: const EdgeInsets.all(5),
+    child: Tab(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+          ),
+        )
+      ],
+    )),
     );
   }
 }
@@ -44,7 +50,6 @@ class _NavPageState extends State<NavPage> {
             elevation: 0,
             color: Color(0xffF3F3F3),
             child: TabBar(
-              isScrollable: true,
               labelColor: orangeColor,
               unselectedLabelColor: blackColor,
               indicatorColor: orangeColor,
