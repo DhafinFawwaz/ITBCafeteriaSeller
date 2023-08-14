@@ -53,63 +53,62 @@ class _StatusOrderState extends State<StatusOrder> {
               fontWeight: FontWeight.w700),
         ),
       ),
-      body: Column(
-        children: [
-          ListView.builder(
-            itemCount: titleList.length,
-            itemBuilder: (context, index) {
-              return Container(
-                width: 300,
-                height: 59,
-                margin: EdgeInsets.only(left: 30, right: 40, top: 10),
-                decoration: BoxDecoration(
-                    color: Color(0xffF3F3F3),
-                    border: Border.all(color: Color(0xffDADADA)),
-                    borderRadius: BorderRadius.circular(10)),
-                child: ListTile(
-                  selected: index == _selectedIndex,
-                  selectedColor: orangeColor,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
-                  title: Text(
-                    titleList[index],
-                    style: TextStyle(
-                      fontFamily: "inter",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  subtitle: Text(subtitleList[index]),
-                  subtitleTextStyle: TextStyle(
-                      fontFamily: 'inter',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                  contentPadding:
-                      EdgeInsets.only(bottom: 0, left: 10, right: 10, top: 0),
-                  trailing: Container(
-                    height: 12,
-                    width: 12,
-                    decoration: BoxDecoration(
-                        color: null,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: blackColor)),
-                  ),
+      body: ListView.builder(
+        itemCount: titleList.length,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 300,
+            height: 59,
+            margin: EdgeInsets.only(left: 30, right: 40, top: 10),
+            decoration: BoxDecoration(
+                color: Color(0xffF3F3F3),
+                border: Border.all(color: Color(0xffDADADA)),
+                borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              selected: index == _selectedIndex,
+              selectedColor: orangeColor,
+              onTap: () {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              title: Text(
+                titleList[index],
+                style: TextStyle(
+                  fontFamily: "inter",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
                 ),
-              );
-            },
-          ),
-          RoundedButton(
-              text: "Product",
-              borderRadius: BorderRadius.circular(22),
-              color: Color(0xff),
-              onPressed: () {},
-              height: 28,
-              width: 300)
-        ],
+              ),
+              subtitle: Text(subtitleList[index]),
+              subtitleTextStyle: TextStyle(
+                  fontFamily: 'inter',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400),
+              contentPadding:
+                  EdgeInsets.only(bottom: 0, left: 10, right: 10, top: 0),
+              trailing: Container(
+                height: 12,
+                width: 12,
+                decoration: BoxDecoration(
+                    color: null,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: blackColor)),
+              ),
+            ),
+          );
+        },
       ),
+      bottomNavigationBar: RoundedButton(
+          text: "Product",
+          borderRadius: BorderRadius.circular(22),
+          color: acceptGreen,
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Order()));
+          },
+          height: 28,
+          width: 300),
     );
   }
 }

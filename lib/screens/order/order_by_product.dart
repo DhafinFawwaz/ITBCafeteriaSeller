@@ -49,22 +49,39 @@ class Product extends StatelessWidget {
             width: 250,
             height: 93,
             color: Color(0xfff3f3f3),
-            child:
+            child: Row(
+              children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(namaProduk,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-              Text("Jumlah : $jumlah"),
-              RoundedButton(
-                  text: "Status",
-                  borderRadius: BorderRadius.circular(22),
-                  color: Color(0xffF87328),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => StatusOrder()));
-                  },
-                  height: 23,
-                  width: 98)
-            ])),
+                  Text(namaProduk,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                  Text("Jumlah : $jumlah"),
+                ]),
+                SizedBox(
+                  width: 40,
+                ),
+                Column(
+                  children: [
+                    Text("Pending"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    RoundedButton(
+                        text: "Status",
+                        borderRadius: BorderRadius.circular(22),
+                        color: Color(0xffF87328),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StatusOrder()));
+                        },
+                        height: 23,
+                        width: 98)
+                  ],
+                )
+              ],
+            )),
       ],
     );
   }
