@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:itb_cafeteria_seller/const.dart';
+import 'package:itb_cafeteria_seller/screens/nav/nav.dart';
 import 'package:itb_cafeteria_seller/screens/order/order.dart';
 import 'package:itb_cafeteria_seller/widgets/rounded_button.dart';
 
 class StatusOrder extends StatefulWidget {
+  final int statusIndex = 0;
+  String state = "Pending";
   @override
   State<StatusOrder> createState() => _StatusOrderState();
 }
@@ -100,12 +103,15 @@ class _StatusOrderState extends State<StatusOrder> {
         },
       ),
       bottomNavigationBar: RoundedButton(
-          text: "Product",
+          text: "Confirm",
           borderRadius: BorderRadius.circular(22),
           color: acceptGreen,
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Order()));
+                context, MaterialPageRoute(builder: (context) => NavPage()));
+            setState(() {
+              StatusOrder().state = titleList[_selectedIndex];
+            });
           },
           height: 28,
           width: 300),
