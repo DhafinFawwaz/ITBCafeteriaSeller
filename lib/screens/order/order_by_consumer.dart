@@ -179,8 +179,8 @@ getAllOrder(Data data) {
   for(int i = 0; i < data.orderItem.length; i++) {
     message += data.orderItem[i].quantity.toString() + " " + data.orderItem[i].productName + " + ";
   }
-  message.substring(0, message.length - 5);
-  return Text(message);
+  
+  return Text(message.substring(0, message.length - 3));
 }
 
 getTimeMessage(String pickupAt) {
