@@ -3,7 +3,7 @@ class ProfileResponse {
     required this.message,
     required this.data,
   });
-  late final String message;
+  late String message;
   late final Data data;
   
   ProfileResponse.fromJson(Map<String, dynamic> json){

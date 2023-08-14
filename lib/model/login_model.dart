@@ -48,6 +48,7 @@ class LoginResponse {
 class Data {
   Data({
     required this.id,
+    required this.locationId,
     required this.username,
     required this.password,
     required this.email,
@@ -57,6 +58,7 @@ class Data {
     required this.token,
   });
   late final int id;
+  late final int locationId;
   late final String username;
   late final String password;
   late final String email;
@@ -67,6 +69,7 @@ class Data {
   
   Data.fromJson(Map<String, dynamic> json){
     id = json['id'];
+    locationId = json['location_id'];
     username = json['username'];
     password = json['password'];
     email = json['email'];
@@ -79,6 +82,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
+    _data['location_id'] = locationId;
     _data['username'] = username;
     _data['password'] = password;
     _data['email'] = email;

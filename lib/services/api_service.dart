@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:itb_cafeteria_seller/model/cart/edit_cart_status_model.dart';
 import 'package:itb_cafeteria_seller/model/product/product_add_model.dart';
 import 'package:itb_cafeteria_seller/model/product/product_model.dart';
 
 import '../config/config.dart';
+import '../data/StaticData.dart';
 import '../model/cart/cart_model.dart';
 import '../model/login_model.dart';
 import '../model/profile/profile_edit_model.dart';
@@ -30,6 +32,8 @@ class APIService {
     if (response.statusCode == 200) {
       await SharedService.setLoginDetails(loginResponse(response.body));
     }
+    
+    StaticData.profileData.message = ""; // to refresh the profile data when entering the profile menu
     return LoginResponse.fromJson(jsonDecode(response.body));
   }
 
@@ -162,14 +166,50 @@ class APIService {
     var uri = Uri.parse(Config.addProductURL);
     model.shopId = loginDetails.data!.id;
 
+    http.MultipartRequest request = http.MultipartRequest("POST", uri);
+
+    http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+        'image', model.image);
+
+    request.files.add(multipartFile);
+    request.headers.addAll(requestHeaders);
+
+    Map<String, String> body = {
+      "shop_id": model.shopId.toString(),
+      "location_id": loginDetails.data!.locationId.toString(),
+      "category_id": model.categoryId.toString(),
+      "name": model.name,
+      "description": model.description,
+      "image": model.image,
+      "price": model.price.toString(),
+      "quantity": model.quantity.toString(),
+    };
+    request.fields.addAll(body);
+
+    var streamedResponse = await client.send(request);
+
+    var response = await http.Response.fromStream(streamedResponse);
+
+    return ProductAddResponse.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<EditCartStatusResponse> editCartStatus(EditCartStatusRequest model) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ${loginDetails!.data!.token}',
+    };
+
+    var uri = Uri.parse(Config.editCartStatusURL);
+
     var response = await client.post(
       uri,
       headers: requestHeaders,
       body: jsonEncode(model.toJson()),
     );
 
-
-    return ProductAddResponse.fromJson(jsonDecode(response.body));
+    return EditCartStatusResponse.fromJson(jsonDecode(response.body));
   }
 
 }

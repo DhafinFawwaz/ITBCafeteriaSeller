@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:itb_cafeteria_seller/data/StaticData.dart';
 import 'package:itb_cafeteria_seller/model/profile/profile_edit_model.dart';
 import 'package:itb_cafeteria_seller/utils/GlobalTheme.dart';
@@ -19,12 +22,14 @@ class _ProductAddState extends State<ProductAdd> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? name = "";
   String? description = "";
-  double? price = 5000;
+  double? price = 0;
   int? quantity = 1;
   String? imageLink = "";
   int locationId = 1;
   int categoryId = 1;
-  String imagePath = "https://cms.zsl.org/sites/default/files/styles/responsive/public/592/560/1/2023-02/Dominica%201%20%2828%29.jpg?itok=UG4tIicq";
+  String imagePath = "";
+
+  bool isLoading = false;
 
   void onSubmit() async
   {
@@ -32,7 +37,7 @@ class _ProductAddState extends State<ProductAdd> {
 
       ProductAddRequest model = ProductAddRequest(
         shopId : 0,
-        locationId : locationId!,
+        locationId : -1,
         categoryId : categoryId!,
         name : name!,
         description : description!,
@@ -40,9 +45,14 @@ class _ProductAddState extends State<ProductAdd> {
         price : price!,
         quantity : quantity!,
       );
+      setState(() {
+        isLoading = true;
+      });
 
       APIService.addProduct(model).then((response) => {
-
+        setState(() {
+          isLoading = false;
+        }),
         if(response.message != "success") {
           onEditFailed(response)
         }
@@ -77,11 +87,29 @@ class _ProductAddState extends State<ProductAdd> {
     return false;
   }
 
+  void onImageEdit() async {
+    print("Image Edit");
+
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image == null) return;
+
+      imagePath = image.path;
+      setState(() {
+        
+      });
+
+    } catch(e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    Widget original =  Scaffold(
       appBar: AppBar(
         title: Text(
           'New Product',
@@ -104,6 +132,28 @@ class _ProductAddState extends State<ProductAdd> {
             key: _formKey,
             child: ListView(
               children: [
+
+                Material(
+                  color: GlobalTheme.slate200,
+                  child: Container(
+                    height: 200,
+                    child: imagePath == "" ? 
+                    
+                    InkWell(
+                      onTap: onImageEdit,
+                      child: Center(child: Text("Select Image"),) 
+                    )
+                    
+                    : 
+                    
+                    GestureDetector(
+                      onTap: onImageEdit,
+                      child: Image.file(File(imagePath), height: 200,)
+                    ),
+                  ),
+                )
+                
+                ,
                 const SizedBox(height: 20),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -142,22 +192,6 @@ class _ProductAddState extends State<ProductAdd> {
                   onSaved: (value) => quantity = int.parse(value == null ? "0" : value),
                 ),
                 const SizedBox(height: 20),
-                DropdownButton<String?>(
-                  value: StaticData.locationById[locationId-1],
-                  elevation: 0,
-                  hint: Text("Location"),
-                  items: StaticData.locationById.map((location) {
-                    return DropdownMenuItem(
-                      value: location,
-                      child: Text(location),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      locationId = StaticData.locationById.indexOf(value!) + 1;
-                  });
-                  },
-                ),
                 DropdownButton<String?>(
                   value: StaticData.categoryById[categoryId-1],
                   elevation: 0,
@@ -200,5 +234,20 @@ class _ProductAddState extends State<ProductAdd> {
         )
       ),
     );
+  
+    if(isLoading) {
+      return Stack(
+        children: [
+          original,
+          Container(
+            color: GlobalTheme.loadingBg,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
+      );;
+    }
+    return original;
   }
 }
